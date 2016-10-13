@@ -1,6 +1,7 @@
 import ephem
 import turtle
-from turtle import *
+import time
+
 
 def location(date):
 	taos = ephem.Observer()
@@ -9,6 +10,7 @@ def location(date):
 	taos.lat, taos.lon = '36.4','-105.6'
 	taos.elevation= 2124
 	taos.date = date
+	#print taos
 	return taos
 
 def setlocaltime(date):
@@ -35,75 +37,105 @@ def moonset(location):
 	localtime = ephem.Date(moonset)
 	return localtime
 
-def turtle_sunset():
+def turtle_sun_moon(moonOrsun,sunrising,sunsetting,moonrising,moonsetting):
 	window=turtle.Screen()
-	window.bgpic('taos_sunset.gif')
-	window.title("Sunrise/Sunset")
-	window.setup(1000,1000)
 	m=turtle.Turtle()
 	m.color('black')
-	m.penup()
-	m.setpos(-275,100)
-	m.pendown()
-	m.write("Sunrise in Taos, New Mexico==> " + str(sunrising) + ' am',font=("Arial",20,"bold"))
-	m.penup()
-	m.setpos(-275,-100)
-	m.pendown()
-	m.write("Sunset in Taos, New Mexico==> " + str(sunsetting) + ' pm',font=("Arial",20,"bold"))
-
-	window.exitonclick()
-
-def turtle_moon():
-	window=turtle.Screen()
-	window.bgpic('moon.gif')
-	window.title("Sunrise/Sunset")
 	window.setup(1000,1000)
-	m=turtle.Turtle()
-	m.color('black')
-	m.penup()
-	m.setpos(-275,100)
-	m.pendown()
-	m.write("Moonrise in Taos, New Mexico==> " + str(moonrising) + ' pm',font=("Arial",20,"bold"))
-	m.setpos(-275,-100)
-	m.pendown()
-	m.write("Moonsetting in Taos, New Mexico==> " + str(moonsetting) + ' pm',font=("Arial",20,"bold"))
 
-	window.exitonclick()
+	if moonOrsun == '1':
+		window.bgpic('taos_sunset.gif')
+		window.title("Sunrise/Sunset")
+		window.setup(1000,1000)
+
+		m.penup()
+		m.setpos(-275,100)
+		m.pendown()
+		m.write("Sunrise in Taos, New Mexico==> " + str(sunrising) + ' AM',font=("Arial",20,"bold"))
+		m.penup()
+		m.setpos(-275,-100)
+		m.pendown()
+		m.write("Sunset in Taos, New Mexico==> " + str(sunsetting) + ' PM',font=("Arial",20,"bold"))
+
+		time.sleep(15)
+		window.clear()
+		window.reset()
+
+		window.bgcolor('black')
+		m.color('white')
+		m.penup()
+		m.setpos(-275,100)
+		m.pendown()
+		m.write("Enter more information into the terminal please!!!!! ",move=False,align="left",font=("Arial",30,"normal"))
+
+		time.sleep(3)
+		window.clear()
+		window.bgcolor('black')
+
+
+
+		
+
+	elif moonOrsun == '2':
+		window.bgpic('moon.gif')
+		window.title("Moonrise/Moonset")
+		window.setup(1000,1000)
+
+		m.color('white')
+
+		m.penup()
+		m.setpos(-275,100)
+		m.pendown()
+		m.write("Moonrise in Taos, New Mexico==> " + str(moonrising) + ' PM',font=("Arial",20,"bold"))
+		m.penup()
+		m.setpos(-275,-100)
+		m.pendown()
+		m.write("Moonset in Taos, New Mexico==> " + str(moonsetting) + ' AM',font=("Arial",20,"bold"))
+		
+		time.sleep(15)
+		window.clear()
+		window.reset()
+
+		window.bgcolor('black')
+		m.color('white')
+		m.penup()
+		m.setpos(-275,100)
+		m.pendown()
+		m.write("Enter more information into the terminal please!!!!!",move=False,align="left",font=("Arial",30,"normal"))
+
+		time.sleep(3)
+		window.clear()
+		window.bgcolor('black')
+
+		
+		
+
+
 
 #MAIN 
+
 while 1:
-	print("This is a Simulation for the Sunrise and Sunset in Taos, New Mexico!!!\n(ALL TIMES ARE MST)\n")
-	date = raw_input(str("Please Enter a Date (Enter as yyyy-mm-dd)\nType -1 to exit\n: "))
+	print("*====================================================================*")
+	print("This is a Simulation for the Sunrise/Sunset and Moonrise/Moonset in Taos, New Mexico!!!\n              (ALL TIMES ARE MST)            \n")
+	date = raw_input(str("Please Enter a Date (Enter as yyyy-mm-dd)\n(Type -1 to exit)\n: "))
 
 	if date == '-1':
-		print "Thank you for using! Goodbye! :)"
+		print("Thank you for using!!!!\nGoodbye!")
 		break
+		
+
 	else:
 		date += ' 17:00:00'
-		moonOrsun = raw_input(str("If you want Sunrise/Sunset press 1: \n If you want Moonrise press 2: \n"))
-		if moonOrsun == '1':
-			taos = location(date)
-			sunrising = sunrise(taos)
-			sunrising = setlocaltime(sunrising)
-			#print( "Sunrise for Taos, New Mexico : \n " + str(sunrising) + 'am')
-			sunsetting = sunset(taos)
-			sunsetting = setlocaltime(sunsetting)
-			#print("Sunset for Taos, New Mexico : \n " + str(sunsetting) + 'pm')
-			turtle_sunset()
+		moonOrsun = raw_input(str("If you want Sunrise/Sunset press 1:\nIf you want Moonrise press 2:\n"))
+		taos = location(date)
+		sunrising = sunrise(taos)
+		sunrising = setlocaltime(sunrising)
+		sunsetting = sunset(taos)
+		sunsetting = setlocaltime(sunsetting)
+		moonrising = moonrise(taos)
+		moonrising = setlocaltime(moonrising)
+		moonsetting = moonset(taos)
+		moonsetting = setlocaltime(moonsetting)
 
-		elif moonOrsun == '2':
-			taos = location(date)
-			moonrising = moonrise(taos)
-			moonrising = setlocaltime(moonrising)
-			#print("Moonrise for Taos, New Mexico : \n" + str(moonrising) + 'pm')
-			moonsetting = moonset(taos)
-			moonsetting = setlocaltime(moonsetting)
-			#print ("Moonset of Taos, New Mexico : \n " + str(moonsetting) + 'am')
-
-			turtle_moon()
-
-		else:
-			print("That was not a choice! ")
-
-
+		turtle_sun_moon(moonOrsun,sunrising,sunsetting,moonrising,moonsetting)
 	
