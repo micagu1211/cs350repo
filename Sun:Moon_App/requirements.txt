@@ -1,5 +1,2 @@
-Python==2.7.12
 turtle==0.0.2
 ephem==3.7.6.0
-time == no specific version (built into python (import time))
-
